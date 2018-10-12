@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
-import { Card, Button } from 'react-native-elements';
+import React, { Component } from "react";
+import { ScrollView, Text, StyleSheet, Image, Dimensions } from "react-native";
+import StatCard from "../../components/StatCard/StatCard";
 
-var width = Dimensions.get('window').width; //full width
-var height = Dimensions.get('window').height; //full height
+var width = Dimensions.get("window").width; //full width
+var height = Dimensions.get("window").height; //full height
 
 class HomeScreen extends Component {
   static navigationOptions = {
@@ -12,45 +12,18 @@ class HomeScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Card title="Heartbeat" containerStyle={styles.card}>
-          <View>
-            <Image style={styles.image} resizeMode="cover" />
-            <Text style={styles.name}>Riko</Text>
-          </View>
-        </Card>
-        <Card title="Calories" containerStyle={styles.card}>
-          <View>
-            <Image style={styles.image} resizeMode="cover" />
-            <Text style={styles.name}>Riko</Text>
-          </View>
-        </Card>
-        <Card title="Some other info" containerStyle={styles.card}>
-          <View>
-            <Image style={styles.image} resizeMode="cover" />
-            <Text style={styles.name}>Riko</Text>
-          </View>
-        </Card>
-        <Card title="Another mHealth info" containerStyle={styles.card}>
-          <View>
-            <Image style={styles.image} resizeMode="cover" />
-            <Text style={styles.name}>Riko</Text>
-          </View>
-        </Card>
-      </View>
+      <ScrollView>
+        <StatCard />
+        <StatCard />
+        <StatCard />
+        <StatCard />
+        <StatCard />
+        <StatCard />
+      </ScrollView>
     );
   }
 }
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  card: {
-    width: width - 10
-  }
-});
+const styles = StyleSheet.create({});
