@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { ScrollView, Text, StyleSheet } from "react-native";
+import UserCard from "../../components/UserCard/UserCard";
 
 class SettingsScreen extends Component {
   static navigationOptions = {
@@ -8,19 +9,11 @@ class SettingsScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>SettingsScreen</Text>
-      </View>
+      <ScrollView>
+        <UserCard />
+      </ScrollView>
     );
   }
 }
 
 export default SettingsScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});

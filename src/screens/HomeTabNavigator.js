@@ -32,20 +32,20 @@ const HomeTabNavigator = createBottomTabNavigator(
     Settings: {
       screen: SettingsScreen,
       navigationOptions: {
-        tabBarIcon: () => <Icon name="notifications" size={22} />
+        tabBarIcon: () => <Icon name="settings" size={22} />
       }
     },
     Notifications: {
       screen: NotificationsScreen,
       navigationOptions: {
-        tabBarIcon: () => <Icon name="settings" size={22} />
+        tabBarIcon: () => <Icon name="notifications" size={22} />
       }
     }
   },
   {
     order: ["Home", "Charts", "Tables", "Notifications", "Settings"],
     tabBarOptions: {
-      activeTintColor: "#18BC9C",
+      activeTintColor: "#45D9CF",
       inactiveTintColor: "gray",
       style: {
         paddingTop: 8
