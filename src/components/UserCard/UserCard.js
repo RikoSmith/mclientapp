@@ -24,6 +24,13 @@ export default class StatCard extends Component {
             <Text style={mainStyles.userQuote}>
               "Lorem ipsum dolor sit amet"
             </Text>
+            <Divider />
+            <View style={mainStyles.userSocial}>
+              <Icon name="logo-facebook" />
+              <Icon name="logo-twitter" />
+              <Icon name="logo-linkedin" />
+              <Icon name="logo-instagram" />
+            </View>
           </View>
         </Card>
       </View>

@@ -59,7 +59,7 @@ module.exports = StyleSheet.create({
     width: "70%",
     alignSelf: "center",
     flexDirection: "column",
-    paddingBottom: 30
+    paddingBottom: 20
   },
   userAvatar: {
     width: 120,
@@ -83,6 +83,22 @@ module.exports = StyleSheet.create({
     alignSelf: "center",
     paddingTop: 10,
     color: "#050505",
-    fontSize: 15
+    fontSize: 15,
+    paddingBottom: 40
+  },
+  userSocial: {
+    width: "80%",
+    alignSelf: "center",
+    paddingTop: 15,
+    flexDirection: "row",
+    justifyContent: "space-around"
+  },
+  //USER SETTINGS --------------------------------------------------
+  settingsTitle: {
+    fontSize: 24,
+    alignSelf: "flex-start",
+    padding: 10,
+    fontWeight: "100",
+    paddingBottom: -10
   }
 });
