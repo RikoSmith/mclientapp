@@ -14,31 +14,33 @@ const HomeTabNavigator = createBottomTabNavigator(
     Home: {
       screen: HomeScreen,
       navigationOptions: {
-        tabBarIcon: () => <Icon name="home" size={22} />
+        tabBarIcon: a => <Icon name="home" color={a.tintColor} size={22} />
       }
     },
     Charts: {
       screen: ChartsScreen,
       navigationOptions: {
-        tabBarIcon: () => <Icon name="analytics" size={22} />
+        tabBarIcon: a => <Icon name="analytics" color={a.tintColor} size={22} />
       }
     },
     Tables: {
       screen: TablesScreen,
       navigationOptions: {
-        tabBarIcon: () => <Icon name="list-box" size={22} />
+        tabBarIcon: a => <Icon name="list-box" color={a.tintColor} size={22} />
       }
     },
     Settings: {
       screen: SettingsScreen,
       navigationOptions: {
-        tabBarIcon: () => <Icon name="settings" size={22} />
+        tabBarIcon: a => <Icon name="settings" color={a.tintColor} size={22} />
       }
     },
     Notifications: {
       screen: NotificationsScreen,
       navigationOptions: {
-        tabBarIcon: () => <Icon name="notifications" size={22} />
+        tabBarIcon: a => (
+          <Icon name="notifications" color={a.tintColor} size={22} />
+        )
       }
     }
   },

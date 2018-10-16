@@ -7,12 +7,29 @@ var mainStyles = require("../../style/main");
 
 const settings = [
   {
-    name: "Amy Farha",
-    value: "Vice President"
+    name: "Name",
+    value: "Johanna Smith",
+    arrow: false
   },
   {
-    name: "Chris Jackson",
-    value: "Vice Chairman"
+    name: "Username",
+    value: "johannasmith",
+    icon: ""
+  },
+  {
+    name: "Gender",
+    value: "Woman",
+    icon: ""
+  },
+  {
+    name: "Country",
+    value: "Kazakshtan",
+    icon: "arrow-dropright"
+  },
+  {
+    name: "Log out",
+    value: "Logged as johannasmith",
+    icon: ""
   }
 ];
 
@@ -26,7 +43,7 @@ export default class UserSettings extends Component {
               key={i}
               title={l.name}
               subtitle={l.value}
-              rightIcon={<Icon name="arrow-dropright" />}
+              rightIcon={<Icon name={l.icon} />}
             />
           ))}
         </Card>

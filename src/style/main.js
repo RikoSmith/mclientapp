@@ -40,6 +40,9 @@ module.exports = StyleSheet.create({
   cardSmallText: {
     paddingLeft: 10
   },
+  tileHome: {
+    margin: 20
+  },
   // USER CARD -------------------------------------------
   userCard: {
     position: "relative",
@@ -100,5 +103,12 @@ module.exports = StyleSheet.create({
     padding: 10,
     fontWeight: "100",
     paddingBottom: -10
+  },
+  //NOTIFICATIONS -----------------------------------------------------------------
+  notsItem: {
+    borderBottomWidth: 0
+  },
+  notsIcon: {
+    marginRight: 20
   }
 });

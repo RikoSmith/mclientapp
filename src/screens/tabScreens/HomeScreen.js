@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ScrollView, Text, StyleSheet, Image, Dimensions } from "react-native";
 import StatCard from "../../components/StatCard/StatCard";
+import HomeTile from "../../components/HomeTile/HomeTile";
 
 var width = Dimensions.get("window").width; //full width
 var height = Dimensions.get("window").height; //full height
@@ -13,6 +14,7 @@ class HomeScreen extends Component {
   render() {
     return (
       <ScrollView>
+        <HomeTile />
         <StatCard />
         <StatCard />
         <StatCard />
