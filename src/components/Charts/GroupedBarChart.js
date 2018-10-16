@@ -16,17 +16,20 @@ class GroupedBarChart extends React.PureComponent {
       {
         data: data1,
         svg: {
-          fill: "rgb(134, 65, 244)"
+          fill: "#1dc7ea"
         }
       },
       {
-        data: data2
+        data: data2,
+        svg: {
+          fill: "#fb404b"
+        }
       }
     ];
 
     return (
       <View>
-        <Card>
+        <Card title="Bar Chart">
           <BarChart
             style={{
               height: 200,
@@ -40,7 +43,11 @@ class GroupedBarChart extends React.PureComponent {
             contentInset={{ top: 30, bottom: 30 }}
             {...this.props}
           >
-            <Grid />
+            <Grid
+              svg={{
+                strokeDasharray: [2, 2]
+              }}
+            />
           </BarChart>
         </Card>
       </View>
