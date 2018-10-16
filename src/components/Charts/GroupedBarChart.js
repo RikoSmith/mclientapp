@@ -1,53 +1,16 @@
 import React from "react";
 import { View } from "react-native";
 import { BarChart, Grid } from "react-native-svg-charts";
+import { Card } from "react-native-elements";
 
 class GroupedBarChart extends React.PureComponent {
   render() {
-    const data1 = [
-      14,
-      -1,
-      100,
-      -95,
-      -94,
-      -24,
-      -8,
-      85,
-      -91,
-      35,
-      -53,
-      53,
-      -78,
-      66,
-      96,
-      33,
-      -26,
-      -32,
-      73,
-      8
-    ].map(value => ({ value }));
-    const data2 = [
-      24,
-      28,
-      93,
-      77,
-      -42,
-      -62,
-      52,
-      -87,
-      21,
-      53,
-      -78,
-      -62,
-      -72,
-      -6,
-      89,
-      -70,
-      -94,
-      10,
-      86,
-      84
-    ].map(value => ({ value }));
+    const data1 = [14, 100, 85, 35, 53, 66, 96, 33, 73, 8].map(value => ({
+      value
+    }));
+    const data2 = [24, 28, 93, 77, 52, 21, 53, 89, 10, 86].map(value => ({
+      value
+    }));
 
     const barData = [
       {
@@ -62,18 +25,25 @@ class GroupedBarChart extends React.PureComponent {
     ];
 
     return (
-      <BarChart
-        style={{ height: 200 }}
-        data={barData}
-        yAccessor={({ item }) => item.value}
-        svg={{
-          fill: "green"
-        }}
-        contentInset={{ top: 30, bottom: 30 }}
-        {...this.props}
-      >
-        <Grid />
-      </BarChart>
+      <View>
+        <Card>
+          <BarChart
+            style={{
+              height: 200,
+              width: 300
+            }}
+            data={barData}
+            yAccessor={({ item }) => item.value}
+            svg={{
+              fill: "green"
+            }}
+            contentInset={{ top: 30, bottom: 30 }}
+            {...this.props}
+          >
+            <Grid />
+          </BarChart>
+        </Card>
+      </View>
     );
   }
 }

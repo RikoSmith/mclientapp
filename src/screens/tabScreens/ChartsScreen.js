@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { ScrollView, Text, StyleSheet } from "react-native";
 import GroupedBarChart from "../../components/Charts/GroupedBarChart";
 
 class ChartsScreen extends Component {
@@ -9,10 +9,9 @@ class ChartsScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Hello</Text>
+      <ScrollView>
         <GroupedBarChart />
-      </View>
+      </ScrollView>
     );
   }
 }

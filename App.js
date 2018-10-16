@@ -17,13 +17,13 @@ class App extends Component {
 export default App;
 
 const AppStackNavigator = createStackNavigator({
+  StartScreen: { screen: StartScreen },
   HomeTabNavigator: {
     screen: HomeTabNavigator,
     navigationOptions: {
       header: null
     }
   },
-  StartScreen: { screen: StartScreen },
   LoginScreen: { screen: LoginScreen },
   SignUpScreen: { screen: SignUpScreen }
 });
