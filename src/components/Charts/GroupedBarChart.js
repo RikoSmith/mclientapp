@@ -1,7 +1,9 @@
 import React from "react";
-import { View } from "react-native";
-import { BarChart, Grid } from "react-native-svg-charts";
+import { View, Dimensions } from "react-native";
+import { BarChart, Grid, XAxis, YAxis } from "react-native-svg-charts";
 import { Card } from "react-native-elements";
+
+var width = Dimensions.get("window").width;
 
 class GroupedBarChart extends React.PureComponent {
   render() {
@@ -33,7 +35,8 @@ class GroupedBarChart extends React.PureComponent {
           <BarChart
             style={{
               height: 200,
-              width: 300
+              width: width * 0.8,
+              alignSelf: "center"
             }}
             data={barData}
             yAccessor={({ item }) => item.value}
@@ -49,6 +52,27 @@ class GroupedBarChart extends React.PureComponent {
               }}
             />
           </BarChart>
+          <YAxis
+            data={data1}
+            contentInset={{ top: 30, bottom: 30 }}
+            svg={{
+              fill: "grey",
+              fontSize: 10
+            }}
+            numberOfTicks={10}
+            formatLabel={value => `${value}ºC`}
+          />
+          <XAxis
+            style={{
+              marginHorizontal: -10,
+              width: width * 0.8,
+              alignSelf: "center"
+            }}
+            data={data1}
+            formatLabel={(value, index) => index}
+            contentInset={{ left: 10, right: 10 }}
+            svg={{ fontSize: 10, fill: "black" }}
+          />
         </Card>
       </View>
     );

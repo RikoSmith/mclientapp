@@ -12,9 +12,9 @@ export default class HomeTile extends Component {
         <Tile
           height={200}
           imageSrc={require("../../media/images/bgtile.png")}
-          title="Lorem ipsum dolor sit amet, consectetur adipisicing elit"
+          title="Hi, Johanna. Looks like you are having a good day ;)"
           featured
-          caption="Tap here for more information"
+          caption="Tap here to update your stats"
           style={mainStyles.tileHome}
         />
       </View>

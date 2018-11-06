@@ -12,7 +12,6 @@ module.exports = StyleSheet.create({
   },
   cardBigIcon: {
     fontSize: 50,
-    color: "#ccc",
     position: "absolute",
     left: 30
   },

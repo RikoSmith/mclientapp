@@ -3,21 +3,25 @@ import { View, Text } from "react-native";
 import { Card, Divider } from "react-native-elements";
 import Icon from "react-native-ionicons";
 
-var mainStyles = require("../../style/main");
+let mainStyles = require("../../style/main");
 
-export default class StatCard extends Component {
-  componentWillMount() {
-    if (this.props.bIconColor)
-      mainStyles.cardBigIcon.color = this.props.bIconColor;
-  }
-
+class StatCard extends Component {
   render() {
+    cardBigIcon = {
+      fontSize: 50,
+      position: "absolute",
+      left: 30,
+      color: this.props.bIconColor
+    };
+    if (this.props.bIconColor) {
+      cardBigIcon.color = this.props.bIconColor;
+    }
     return (
       <View>
         <Card containerStyle={mainStyles.card}>
           <Icon
             name={this.props.bIconName ? this.props.bIconName : "help-circle"}
-            style={mainStyles.cardBigIcon}
+            style={cardBigIcon}
           />
           <Text style={mainStyles.cardTitle}>
             {this.props.title ? this.props.title : "Title"}
@@ -40,3 +44,5 @@ export default class StatCard extends Component {
     );
   }
 }
+
+export default StatCard;

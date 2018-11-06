@@ -2,15 +2,26 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 import { createStackNavigator } from "react-navigation";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
 
 import StartScreen from "./src/screens/StartScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import HomeTabNavigator from "./src/screens/HomeTabNavigator";
+import reducers from "./src/reducers";
+
+const initialState = {};
+
+const store = createStore(reducers);
 
 class App extends Component {
   render() {
-    return <AppStackNavigator />;
+    return (
+      <Provider store={store}>
+        <AppStackNavigator />
+      </Provider>
+    );
   }
 }
 
