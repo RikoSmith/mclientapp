@@ -9,11 +9,9 @@ import StartScreen from "./src/screens/StartScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import HomeTabNavigator from "./src/screens/HomeTabNavigator";
-import reducers from "./src/reducers";
+import reducer from "./src/reducers";
 
-const initialState = {};
-
-const store = createStore(reducers);
+const store = createStore(reducer);
 
 class App extends Component {
   render() {

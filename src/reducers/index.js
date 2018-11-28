@@ -1,6 +1,19 @@
-import { combineReducers } from "redux";
-import GetUser from "./GetUser";
+const initialState = {
+  token: 0,
+  fdata: {}
+};
 
-export default combineReducers({
-  user: GetUser
-});
+const reducer = (state = initialState, action) => {
+  const newState = { ...state };
+
+  if (action.type === "LOG_IN") {
+    newState.token = action.token;
+  }
+  if (action.type === "LOG_IN") {
+    newState.fdata = action.fdata;
+  }
+
+  return newState;
+};
+
+export default reducer;

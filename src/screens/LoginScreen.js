@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Button, Card } from "react-native-elements";
+import instance from "../utils/axiosConf";
+import { Base64 } from "js-base64";
+import { connect } from "react-redux";
 
 class LoginScreen extends Component {
   static navigationOptions = {
@@ -9,7 +12,7 @@ class LoginScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { username: "Username", password: "123456" };
+    this.state = { username: "rikosmith", password: "asdasd" };
   }
 
   changeName = text => {
@@ -20,7 +23,39 @@ class LoginScreen extends Component {
     this.setState({ password: pw });
   };
 
+  onLoginPress = () => {
+    //this.props.navigation.navigate("HomeTabNavigator");
+    console.log(this.state.username + ":" + this.state.password);
+    const code2 = Base64.encode(
+      this.state.username + ":" + this.state.password
+    );
+    console.log(code2);
+    instance
+      .post(
+        "/login",
+        {},
+        {
+          headers: {
+            Authorization: "Basic " + code2,
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        }
+      )
+      .then(response => {
+        console.log(this.props.token);
+        console.log(response);
+        this.props.onLogin(response.data.token);
+        this.props.navigation.navigate("HomeTabNavigator");
+        console.log(this.props.token);
+        console.log(this.props);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   render() {
+    console.log("Rendering");
     return (
       <View style={styles.container}>
         <TextInput
@@ -32,7 +67,7 @@ class LoginScreen extends Component {
             minWidth: 300,
             fontSize: 16
           }}
-          onChangeText={text => this.changeName()}
+          onChangeText={username => this.changeName(username)}
           value={this.state.username}
         />
         <TextInput
@@ -46,7 +81,7 @@ class LoginScreen extends Component {
             fontSize: 16,
             marginTop: 10
           }}
-          onChangeText={text => this.changePass()}
+          onChangeText={password => this.changePass(password)}
           value={this.state.password}
         />
         <Button
@@ -62,14 +97,31 @@ class LoginScreen extends Component {
             fontSize: 18
           }}
           title="Submit"
-          onPress={() => this.props.navigation.navigate("HomeTabNavigator")}
+          onPress={() => this.onLoginPress()}
         />
       </View>
     );
   }
 }
 
-export default LoginScreen;
+const mapStateToProps = (state, props) => {
+  return {
+    token: state.token,
+    navigation: props.navigation
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogin: token => dispatch({ type: "LOG_IN", token }),
+    onSuccess: fdata => dispatch({ type: "GET_FDATA", fdata })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {
