@@ -3,6 +3,10 @@ package com.mclientapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.zmxv.RNSound.RNSoundPackage;
+import com.rnfs.RNFSPackage;
+import com.goodatlas.audiorecord.RNAudioRecordPackage;
+import com.kevinresol.react_native_sound_recorder.RNSoundRecorderPackage;
 import com.horcrux.svg.SvgPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -24,6 +28,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNSoundPackage(),
+            new RNFSPackage(),
+            new RNAudioRecordPackage(),
+            new RNSoundRecorderPackage(),
             new SvgPackage()
       );
     }

@@ -1,4 +1,12 @@
 rootProject.name = 'mclientapp'
+include ':react-native-sound'
+project(':react-native-sound').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sound/android')
+include ':react-native-fs'
+project(':react-native-fs').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fs/android')
+include ':react-native-audio-record'
+project(':react-native-audio-record').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-audio-record/android')
+include ':react-native-sound-recorder'
+project(':react-native-sound-recorder').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sound-recorder/android')
 include ':react-native-svg'
 project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
 

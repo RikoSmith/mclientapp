@@ -148,6 +148,10 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-sound')
+    compile project(':react-native-fs')
+    compile project(':react-native-audio-record')
+    compile project(':react-native-sound-recorder')
     compile project(':react-native-svg')
     compile ("com.facebook.react:react-native:0.57.0") { force = true }
     implementation fileTree(dir: "libs", include: ["*.jar"])

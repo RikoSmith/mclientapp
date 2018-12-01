@@ -2,11 +2,24 @@ import React, { Component } from "react";
 import { ScrollView, Text, StyleSheet, Image, Dimensions } from "react-native";
 import StatCard from "../../components/StatCard/StatCard";
 import HomeTile from "../../components/HomeTile/HomeTile";
+import RecCard from "../../components/RecCard/RecCard";
 import { connect } from "react-redux";
 import instance from "../../utils/axiosConf";
+import { PermissionsAndroid } from "react-native";
+import AudioRecord from "react-native-audio-record";
+var RNFS = require("react-native-fs");
+
+var mainStyles = require("../../style/main");
 
 var width = Dimensions.get("window").width; //full width
 var height = Dimensions.get("window").height; //full height
+
+const options = {
+  sampleRate: 16000, // default 44100
+  channels: 1, // 1 or 2, default 1
+  bitsPerSample: 16, // 8 or 16, default 16
+  wavFile: "audio.wav" // default 'audio.wav'
+};
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -15,7 +28,9 @@ class HomeScreen extends Component {
       hbeat: 0,
       weight: 0,
       todos: 0,
-      mood: "None"
+      mood: "None",
+      recording: false,
+      passed: false
     };
   }
 
@@ -52,12 +67,57 @@ class HomeScreen extends Component {
       .catch(err => {
         console.log(err);
       });
+
+    async function requestAudio(that) {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+          {
+            title: "Cool Photo App Camera Permission",
+            message:
+              "Cool Photo App needs access to your camera " +
+              "so you can take awesome pictures."
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log("Started recording");
+          AudioRecord.init(options);
+          AudioRecord.start();
+          for (i = 0; i < 1000000000; i++) {
+            if (i === 1000000000 - 2) {
+              that.setState({ passed: true });
+            }
+          }
+          audioFile = "";
+          if (that.state.passed) {
+            console.log("passed time");
+            console.log("Saved here:" + RNFS.DocumentDirectoryPath);
+            audioFile = await AudioRecord.stop();
+          }
+          console.log(audioFile);
+          console.log("Stopped recording");
+          const f = new FormData();
+          f.append("weight", "65");
+          f.append("hbeat", "75");
+          f.append("mood", "moderate");
+          f.append("totdo", "7");
+          console.log(f);
+        } else {
+          console.log("Camera permission denied");
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+
+    requestAudio(this);
   }
 
   render() {
     return (
-      <ScrollView>
-        <HomeTile />
+      <ScrollView style={mainStyles.scrollV}>
+        <HomeTile onPress={() => this.onRecord()} />
+        {this.state.recording ? <RecCard /> : null}
         <StatCard
           bIconName="fitness"
           bIconColor="#ff9500"

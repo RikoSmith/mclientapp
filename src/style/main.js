@@ -109,5 +109,12 @@ module.exports = StyleSheet.create({
   },
   notsIcon: {
     marginRight: 20
-  }
+  },
+  //RECORDING CARD -------------------------------------------------------------
+  recBody: {
+    height: 200,
+    width: 200,
+    backgroundColor: "#ccc"
+  },
+  scrollV: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }
 });
