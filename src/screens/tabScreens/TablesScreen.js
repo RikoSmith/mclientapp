@@ -84,11 +84,9 @@ class TablesScreen extends Component {
       f.append("weight", "65");
       f.append("hbeat", "75");
       f.append("mood", "moderate");
-      f.append("totdo", "7");
+      f.append("totdo", "w7");
 
-      //--------------------------------------------------------\
-      //-----------------------------------------------------
-      RNFS.readDir(RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+      RNFS.readDir(RNFS.DocumentDirectoryPath1)
         .then(result => {
           console.log("GOT RESULT", result);
           f.append("audio", {
@@ -100,20 +98,48 @@ class TablesScreen extends Component {
             type: "audio/wave",
             name: result[result.length - 1].name
           });
-
-          // stat the first file
           return Promise.all([RNFS.stat(result[0].path), result[0].path]);
         })
         .then(statResult => {
           if (statResult[0].isFile()) {
             console.log("MY FILE:" + statResult[0].name);
           }
-
           return "no file";
+        })
+        .then(contents => {
+          console.log(contents);
+        })
+        .catch(err => {
+          console.log(err.message, err.code);
         });
+      //--------------------------------------------------------\
+      //-----------------------------------------------------
+      // RNFS.readDir(RNFS.ExternalStorageDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+      //   .then(result => {
+      //     console.log("GOT RESULT", result);
+      //     f.append("audio", {
+      //       uri:
+      //         "file://" +
+      //         RNFS.ExternalStorageDirectoryPath +
+      //         "/" +
+      //         result[result.length - 1].name,
+      //       type: "audio/wave",
+      //       name: result[result.length - 1].name
+      //     });
+
+      //     // stat the first file
+      //     return Promise.all([RNFS.stat(result[0].path), result[0].path]);
+      //   })
+      //   .then(statResult => {
+      //     if (statResult[0].isFile()) {
+      //       console.log("MY FILE:" + statResult[0].name);
+      //     }
+
+      //     return "no file";
+      //   });
       //-----------------------------------------------------
       console.log(f);
-      console.log("MY TOKRN: " + this.props.token);
+      console.log("MY TOKEN: " + this.props.token);
       instance
         .post("/fdata", f, {
           headers: {
@@ -164,6 +190,7 @@ class TablesScreen extends Component {
       <View style={styles.container}>
         <View style={styles.row}>
           <Button onPress={this.start} title="Record" disabled={recording} />
+          <Button onPress={this.load} title="Send" disabled={recording} />
           <Button onPress={this.stop} title="Stop" disabled={!recording} />
           {paused ? (
             <Button onPress={this.play} title="Play" disabled={!audioFile} />
