@@ -23,10 +23,12 @@ const HomeTabNavigator = createBottomTabNavigator(
         tabBarIcon: a => <Icon name="analytics" color={a.tintColor} size={22} />
       }
     },
-    Tables: {
+    Record: {
       screen: TablesScreen,
       navigationOptions: {
-        tabBarIcon: a => <Icon name="list-box" color={a.tintColor} size={22} />
+        tabBarIcon: a => (
+          <Icon name="microphone" color={a.tintColor} size={22} />
+        )
       }
     },
     Settings: {
@@ -45,7 +47,7 @@ const HomeTabNavigator = createBottomTabNavigator(
     }
   },
   {
-    order: ["Home", "Charts", "Tables", "Notifications", "Settings"],
+    order: ["Home", "Charts", "Record", "Notifications", "Settings"],
     tabBarOptions: {
       activeTintColor: "#45D9CF",
       inactiveTintColor: "gray",

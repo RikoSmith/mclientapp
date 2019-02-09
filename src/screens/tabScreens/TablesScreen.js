@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button } from "react-native";
+import { StyleSheet, View, Button, Text } from "react-native";
 import { Buffer } from "buffer";
 import Permissions from "react-native-permissions";
 import Sound from "react-native-sound";
@@ -14,7 +14,8 @@ class TablesScreen extends Component {
     audioFile: "",
     recording: false,
     loaded: false,
-    paused: true
+    paused: true,
+    result: "Click Record"
   };
 
   static navigationOptions = {
@@ -25,7 +26,7 @@ class TablesScreen extends Component {
     await this.checkPermission();
 
     const options = {
-      sampleRate: 16000,
+      sampleRate: 44100,
       channels: 1,
       bitsPerSample: 16,
       wavFile: "test.wav"
@@ -60,9 +61,56 @@ class TablesScreen extends Component {
   stop = async () => {
     if (!this.state.recording) return;
     console.log("stop record");
+    this.setState({ result: "Processing..." });
     let audioFile = await AudioRecord.stop();
     console.log("audioFile", audioFile);
     this.setState({ audioFile, recording: false });
+
+    //--------------------------------------------------------\
+    //-----------------------------------------------------
+    RNFS.readDir(RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+      .then(result => {
+        console.log("GOT RESULT", result);
+
+        // stat the first file
+        return Promise.all([
+          RNFS.stat(result[result.length - 1].path),
+          result[result.length - 1].path
+        ]);
+      })
+      .then(statResult => {
+        if (statResult[0].isFile()) {
+          // if we have a file, read it
+          return RNFS.readFile(statResult[1], "base64");
+        }
+
+        return "no file";
+      })
+      .then(contents => {
+        // log the file contents
+        const f = new FormData();
+        f.append("lol", "asdasd");
+        f.append("audio", contents);
+        console.log(f);
+        console.log("MY TOKEN: " + this.props.token);
+        instance
+          .post("/test", f, {
+            headers: {
+              "x-access-token": this.props.token
+            }
+          })
+          .then(response => {
+            console.log(response.data);
+            this.setState({ result: response.data.new_mood });
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      })
+      .catch(err => {
+        console.log(err.message, err.code);
+      });
+    //-----------------------------------------------------
   };
 
   load = () => {
@@ -79,80 +127,6 @@ class TablesScreen extends Component {
         this.setState({ loaded: true });
         return resolve();
       });
-
-      const f = new FormData();
-      f.append("weight", "65");
-      f.append("hbeat", "75");
-      f.append("mood", "moderate");
-      f.append("totdo", "w7");
-
-      RNFS.readDir(RNFS.DocumentDirectoryPath1)
-        .then(result => {
-          console.log("GOT RESULT", result);
-          f.append("audio", {
-            uri:
-              "file://" +
-              RNFS.DocumentDirectoryPath +
-              "/" +
-              result[result.length - 1].name,
-            type: "audio/wave",
-            name: result[result.length - 1].name
-          });
-          return Promise.all([RNFS.stat(result[0].path), result[0].path]);
-        })
-        .then(statResult => {
-          if (statResult[0].isFile()) {
-            console.log("MY FILE:" + statResult[0].name);
-          }
-          return "no file";
-        })
-        .then(contents => {
-          console.log(contents);
-        })
-        .catch(err => {
-          console.log(err.message, err.code);
-        });
-      //--------------------------------------------------------\
-      //-----------------------------------------------------
-      // RNFS.readDir(RNFS.ExternalStorageDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
-      //   .then(result => {
-      //     console.log("GOT RESULT", result);
-      //     f.append("audio", {
-      //       uri:
-      //         "file://" +
-      //         RNFS.ExternalStorageDirectoryPath +
-      //         "/" +
-      //         result[result.length - 1].name,
-      //       type: "audio/wave",
-      //       name: result[result.length - 1].name
-      //     });
-
-      //     // stat the first file
-      //     return Promise.all([RNFS.stat(result[0].path), result[0].path]);
-      //   })
-      //   .then(statResult => {
-      //     if (statResult[0].isFile()) {
-      //       console.log("MY FILE:" + statResult[0].name);
-      //     }
-
-      //     return "no file";
-      //   });
-      //-----------------------------------------------------
-      console.log(f);
-      console.log("MY TOKEN: " + this.props.token);
-      instance
-        .post("/fdata", f, {
-          headers: {
-            "x-access-token": this.props.token,
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        })
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
     });
   };
 
@@ -188,9 +162,13 @@ class TablesScreen extends Component {
     const { recording, paused, audioFile } = this.state;
     return (
       <View style={styles.container}>
+        <View style={styles.tCont}>
+          <Text style={styles.text}>
+            {recording ? "Recording..." : this.state.result}
+          </Text>
+        </View>
         <View style={styles.row}>
           <Button onPress={this.start} title="Record" disabled={recording} />
-          <Button onPress={this.load} title="Send" disabled={recording} />
           <Button onPress={this.stop} title="Stop" disabled={!recording} />
           {paused ? (
             <Button onPress={this.play} title="Play" disabled={!audioFile} />
@@ -219,5 +197,13 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "space-evenly"
+  },
+  text: {
+    fontSize: 24,
+    alignSelf: "center"
+  },
+  tCont: {
+    flex: 0.3,
+    justifyContent: "center"
   }
 });
