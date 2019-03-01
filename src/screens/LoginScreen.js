@@ -24,11 +24,7 @@ class LoginScreen extends Component {
   };
 
   onLoginPress = () => {
-    //this.props.navigation.navigate("HomeTabNavigator");
-    console.log(this.state.username + ":" + this.state.password);
-    const code2 = Base64.encode(
-      this.state.username + ":" + this.state.password
-    );
+    const code2 = Base64.encode("rikosmith:asdasd");
     console.log(code2);
     instance
       .post(

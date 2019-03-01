@@ -7,6 +7,18 @@ import AudioRecord from "react-native-audio-record";
 import instance from "../../utils/axiosConf";
 var RNFS = require("react-native-fs");
 import { connect } from "react-redux";
+import { ButtonGroup } from "react-native-elements";
+var Meyda = require("meyda");
+Meyda.bufferSize = 512;
+Meyda.numberOfMFCCCoefficients = 16;
+
+function concatTypedArrays(a, b) {
+  // a, b TypedArray of same type
+  var c = new a.constructor(a.length + b.length);
+  c.set(a, 0);
+  c.set(b, a.length);
+  return c;
+}
 
 class TablesScreen extends Component {
   sound = null;
@@ -17,7 +29,8 @@ class TablesScreen extends Component {
     paused: true,
     result: "Click Record"
   };
-
+  counter = 0;
+  audioBase64 = "";
   static navigationOptions = {
     header: null
   };
@@ -26,7 +39,7 @@ class TablesScreen extends Component {
     await this.checkPermission();
 
     const options = {
-      sampleRate: 44100,
+      sampleRate: 38545,
       channels: 1,
       bitsPerSample: 16,
       wavFile: "test.wav"
@@ -35,8 +48,20 @@ class TablesScreen extends Component {
     AudioRecord.init(options);
 
     AudioRecord.on("data", data => {
-      const chunk = Buffer.from(data, "base64");
+      ///this.audioBase64 = this.audioBase64.concat(data);
+      //const chunk = Buffer.from(data, "base64");
       // do something with audio chunk
+      //this.counter++;
+      //if (this.counter == 128) {
+      // this.counter = 0;
+      // this.stop();
+      // break;
+      // }
+      //console.log("real_time: " + this.counter);
+      //console.log("this.audioBase64 length: " + this.audioBase64.length);
+      //console.log(chunk);
+      //f = Meyda.extract("mfcc", chunk);
+      //console.log(f);
     });
   }
 
@@ -68,48 +93,56 @@ class TablesScreen extends Component {
 
     //--------------------------------------------------------\
     //-----------------------------------------------------
-    RNFS.readDir(RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
-      .then(result => {
-        console.log("GOT RESULT", result);
+    token_auth = this.props.token;
+    comp = this;
+    console.log("comp");
+    console.log(comp);
+    setTimeout(function() {
+      RNFS.readDir(RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+        .then(result => {
+          console.log("GOT RESULT", result);
 
-        // stat the first file
-        return Promise.all([
-          RNFS.stat(result[result.length - 1].path),
-          result[result.length - 1].path
-        ]);
-      })
-      .then(statResult => {
-        if (statResult[0].isFile()) {
-          // if we have a file, read it
-          return RNFS.readFile(statResult[1], "base64");
-        }
+          // stat the first file
+          return Promise.all([
+            RNFS.stat(result[result.length - 1].path),
+            result[result.length - 1].path
+          ]);
+        })
+        .then(statResult => {
+          if (statResult[0].isFile()) {
+            // if we have a file, read it
+            return RNFS.readFile(statResult[1], "base64");
+          }
 
-        return "no file";
-      })
-      .then(contents => {
-        // log the file contents
-        const f = new FormData();
-        f.append("lol", "asdasd");
-        f.append("audio", contents);
-        console.log(f);
-        console.log("MY TOKEN: " + this.props.token);
-        instance
-          .post("/test", f, {
-            headers: {
-              "x-access-token": this.props.token
-            }
-          })
-          .then(response => {
-            console.log(response.data);
-            this.setState({ result: response.data.new_mood });
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      })
-      .catch(err => {
-        console.log(err.message, err.code);
-      });
+          return "no file";
+        })
+        .then(contents => {
+          // log the file contents
+          const f = new FormData();
+          f.append("lol", "asdasd");
+          f.append("audio", contents);
+          console.log(f);
+          console.log("MY TOKEN: " + token_auth);
+          console.log(contents);
+          instance
+            .post("/test", f, {
+              headers: {
+                "x-access-token": token_auth
+              }
+            })
+            .then(response => {
+              console.log(response.data);
+              comp.setState({ result: response.data.new_mood });
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        })
+        .catch(err => {
+          console.log(err.message, err.code);
+        });
+    }, 2000);
+
     //-----------------------------------------------------
   };
 
