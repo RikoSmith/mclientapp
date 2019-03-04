@@ -48,20 +48,20 @@ class TablesScreen extends Component {
     AudioRecord.init(options);
 
     AudioRecord.on("data", data => {
-      /*this.audioBase64 = this.audioBase64.concat(data);
       const chunk = Buffer.from(data, "base64");
       // do something with audio chunk
       this.counter++;
-      if (this.counter == 128) {
-        this.counter = 0;
-        this.stop();
-        break;
+      if (this.counter <= 128) {
+        this.audioBase64 = this.audioBase64.concat(data);
+        console.log("real_time: " + this.counter);
+        console.log("this.audioBase64 length: " + this.audioBase64.length);
+        console.log(chunk);
+        f = Meyda.extract("mfcc", chunk);
+        console.log(f);
       }
-      console.log("real_time: " + this.counter);
-      console.log("this.audioBase64 length: " + this.audioBase64.length);
-      console.log(chunk);
-      f = Meyda.extract("mfcc", chunk);
-      console.log(f);*/
+      if (this.counter > 128) {
+        this.stop();
+      }
     });
   }
 
@@ -88,13 +88,32 @@ class TablesScreen extends Component {
     console.log("stop record");
     this.setState({ result: "Processing..." });
     let audioFile = await AudioRecord.stop();
-    console.log("audioFile", audioFile);
     this.setState({ audioFile, recording: false });
+    final = [];
+    console.log("audioFile", audioFile);
+    console.log("audioBase64 length: " + this.audioBase64.length);
+    division = Math.floor(this.audioBase64.length / 4);
+    for (i = 0; i < 4; i++) {
+      if (i < 3) {
+        str2 = this.audioBase64.slice(i * division, (i + 1) * division);
+      } else {
+        str2 = this.audioBase64.slice(i * division, this.audioBase64.length);
+      }
+      buff = Buffer.from(str2, "base64");
+      f = Meyda.extract("mfcc", buff);
+      final = final.concat(f);
+      console.log(i + "-th slice: " + str2.length);
+      console.log(i + "-th buff: " + buff.length);
+      console.log(f);
+    }
+    console.log("final");
+    console.log(final);
+    this.counter = 0;
 
     //--------------------------------------------------------\
     //-----------------------------------------------------
+    /*comp = this;
     token_auth = this.props.token;
-    comp = this;
     console.log("comp");
     console.log(comp);
     setTimeout(function() {
@@ -123,7 +142,7 @@ class TablesScreen extends Component {
           f.append("audio", contents);
           console.log(f);
           console.log("MY TOKEN: " + token_auth);
-          console.log(contents);
+          console.log(contents.length);
           instance
             .post("/test", f, {
               headers: {
@@ -141,7 +160,7 @@ class TablesScreen extends Component {
         .catch(err => {
           console.log(err.message, err.code);
         });
-    }, 2000);
+    }, 2000);*/
 
     //-----------------------------------------------------
   };
