@@ -48,20 +48,20 @@ class TablesScreen extends Component {
     AudioRecord.init(options);
 
     AudioRecord.on("data", data => {
-      ///this.audioBase64 = this.audioBase64.concat(data);
-      //const chunk = Buffer.from(data, "base64");
+      /*this.audioBase64 = this.audioBase64.concat(data);
+      const chunk = Buffer.from(data, "base64");
       // do something with audio chunk
-      //this.counter++;
-      //if (this.counter == 128) {
-      // this.counter = 0;
-      // this.stop();
-      // break;
-      // }
-      //console.log("real_time: " + this.counter);
-      //console.log("this.audioBase64 length: " + this.audioBase64.length);
-      //console.log(chunk);
-      //f = Meyda.extract("mfcc", chunk);
-      //console.log(f);
+      this.counter++;
+      if (this.counter == 128) {
+        this.counter = 0;
+        this.stop();
+        break;
+      }
+      console.log("real_time: " + this.counter);
+      console.log("this.audioBase64 length: " + this.audioBase64.length);
+      console.log(chunk);
+      f = Meyda.extract("mfcc", chunk);
+      console.log(f);*/
     });
   }
 
