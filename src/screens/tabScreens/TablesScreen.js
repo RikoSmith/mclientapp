@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { ButtonGroup } from "react-native-elements";
 var Meyda = require("meyda");
 Meyda.bufferSize = 512;
-Meyda.numberOfMFCCCoefficients = 16;
+Meyda.numberOfMFCCCoefficients = 30;
 
 function concatTypedArrays(a, b) {
   // a, b TypedArray of same type
@@ -92,7 +92,9 @@ class TablesScreen extends Component {
     final = [];
     console.log("audioFile", audioFile);
     console.log("audioBase64 length: " + this.audioBase64.length);
-    division = Math.floor(this.audioBase64.length / 4);
+    buff = Buffer.from(this.audioBase64, "base64");
+    final = Meyda.extract("mfcc", buff);
+    /*division = Math.floor(this.audioBase64.length / 4);
     for (i = 0; i < 4; i++) {
       if (i < 3) {
         str2 = this.audioBase64.slice(i * division, (i + 1) * division);
@@ -100,15 +102,34 @@ class TablesScreen extends Component {
         str2 = this.audioBase64.slice(i * division, this.audioBase64.length);
       }
       buff = Buffer.from(str2, "base64");
-      f = Meyda.extract("mfcc", buff);
-      final = final.concat(f);
+      fe = Meyda.extract("mfcc", buff);
+      final = final.concat(fe);
       console.log(i + "-th slice: " + str2.length);
       console.log(i + "-th buff: " + buff.length);
-      console.log(f);
-    }
+      console.log(fe);
+    }*/
     console.log("final");
-    console.log(final);
+    console.log("final:" + final);
     this.counter = 0;
+
+    const f = new FormData();
+    f.append("lol", "asdasd");
+    f.append("features", JSON.stringify({ fe: final }));
+    console.log(f);
+    console.log("MY TOKEN: " + this.props.token);
+    instance
+      .post("/test_feature", f, {
+        headers: {
+          "x-access-token": this.props.token
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        this.setState({ result: response.data.new_mood });
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
     //--------------------------------------------------------\
     //-----------------------------------------------------
