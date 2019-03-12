@@ -10,11 +10,13 @@
     "axios": "^0.18.0",
     "babel-preset-env": "^1.7.0",
     "buffer": "^5.2.1",
+    "fft-js": "0.0.11",
     "js-base64": "^2.4.9",
     "meyda": "^4.2.0",
+    "node-mfcc": "0.0.2",
     "react": "16.5.0",
     "react-bootstrap": "^0.32.4",
-    "react-native": "^0.57.0",
+    "react-native": "^0.58.6",
     "react-native-audio": "^4.2.2",
     "react-native-audio-record": "^0.1.2",
     "react-native-elements": "^0.19.1",
@@ -32,8 +34,8 @@
     "utf8": "^3.0.0"
   },
   "devDependencies": {
-    "babel-jest": "23.6.0",
-    "jest": "23.6.0",
+    "babel-jest": "^24.4.0",
+    "jest": "^24.4.0",
     "metro-react-native-babel-preset": "0.45.2",
     "react-test-renderer": "16.5.0"
   },
