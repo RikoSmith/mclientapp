@@ -14,7 +14,7 @@
     "meyda": "^4.2.0",
     "react": "16.5.0",
     "react-bootstrap": "^0.32.4",
-    "react-native": "^0.57.0",
+    "react-native": "0.57.0",
     "react-native-audio": "^4.2.2",
     "react-native-audio-record": "^0.1.2",
     "react-native-elements": "^0.19.1",
