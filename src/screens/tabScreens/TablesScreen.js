@@ -7,18 +7,6 @@ import AudioRecord from "react-native-audio-record";
 import instance from "../../utils/axiosConf";
 var RNFS = require("react-native-fs");
 import { connect } from "react-redux";
-import { ButtonGroup } from "react-native-elements";
-var Meyda = require("meyda");
-Meyda.bufferSize = 512;
-Meyda.numberOfMFCCCoefficients = 16;
-
-function concatTypedArrays(a, b) {
-  // a, b TypedArray of same type
-  var c = new a.constructor(a.length + b.length);
-  c.set(a, 0);
-  c.set(b, a.length);
-  return c;
-}
 
 class TablesScreen extends Component {
   sound = null;
@@ -29,7 +17,6 @@ class TablesScreen extends Component {
     paused: true,
     result: "Click Record"
   };
-  counter = 0;
   audioBase64 = "";
   static navigationOptions = {
     header: null
@@ -39,7 +26,7 @@ class TablesScreen extends Component {
     await this.checkPermission();
 
     const options = {
-      sampleRate: 38545,
+      sampleRate: 48000,
       channels: 1,
       bitsPerSample: 16,
       wavFile: "test.wav"
@@ -50,18 +37,6 @@ class TablesScreen extends Component {
     AudioRecord.on("data", data => {
       const chunk = Buffer.from(data, "base64");
       // do something with audio chunk
-      this.counter++;
-      if (this.counter <= 128) {
-        this.audioBase64 = this.audioBase64.concat(data);
-        console.log("real_time: " + this.counter);
-        console.log("this.audioBase64 length: " + this.audioBase64.length);
-        console.log(chunk);
-        f = Meyda.extract("mfcc", chunk);
-        console.log(f);
-      }
-      if (this.counter > 128) {
-        this.stop();
-      }
     });
   }
 
@@ -85,42 +60,22 @@ class TablesScreen extends Component {
 
   stop = async () => {
     if (!this.state.recording) return;
-    console.log("stop record");
     this.setState({ result: "Processing..." });
+    console.log("63");
     let audioFile = await AudioRecord.stop();
+    console.log("65");
     this.setState({ audioFile, recording: false });
-    final = [];
-    console.log("audioFile", audioFile);
-    console.log("audioBase64 length: " + this.audioBase64.length);
-    division = Math.floor(this.audioBase64.length / 4);
-    for (i = 0; i < 4; i++) {
-      if (i < 3) {
-        str2 = this.audioBase64.slice(i * division, (i + 1) * division);
-      } else {
-        str2 = this.audioBase64.slice(i * division, this.audioBase64.length);
-      }
-      buff = Buffer.from(str2, "base64");
-      f = Meyda.extract("mfcc", buff);
-      final = final.concat(f);
-      console.log(i + "-th slice: " + str2.length);
-      console.log(i + "-th buff: " + buff.length);
-      console.log(f);
-    }
-    console.log("final");
-    console.log(final);
-    this.counter = 0;
+    console.log("67");
 
     //--------------------------------------------------------\
     //-----------------------------------------------------
-    /*comp = this;
+    comp = this;
     token_auth = this.props.token;
-    console.log("comp");
-    console.log(comp);
     setTimeout(function() {
       RNFS.readDir(RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
         .then(result => {
-          console.log("GOT RESULT", result);
-
+          //console.log("GOT RESULT", result);
+          console.log("75-76");
           // stat the first file
           return Promise.all([
             RNFS.stat(result[result.length - 1].path),
@@ -130,19 +85,21 @@ class TablesScreen extends Component {
         .then(statResult => {
           if (statResult[0].isFile()) {
             // if we have a file, read it
+            console.log("80-82");
             return RNFS.readFile(statResult[1], "base64");
           }
 
           return "no file";
         })
         .then(contents => {
+          console.log("89");
           // log the file contents
           const f = new FormData();
           f.append("lol", "asdasd");
           f.append("audio", contents);
-          console.log(f);
-          console.log("MY TOKEN: " + token_auth);
-          console.log(contents.length);
+          //console.log(f);
+          //console.log("MY TOKEN: " + token_auth);
+          //console.log(contents.length);
           instance
             .post("/test", f, {
               headers: {
@@ -158,9 +115,10 @@ class TablesScreen extends Component {
             });
         })
         .catch(err => {
+          console.log("103-116");
           console.log(err.message, err.code);
         });
-    }, 2000);*/
+    }, 2000);
 
     //-----------------------------------------------------
   };
@@ -211,6 +169,7 @@ class TablesScreen extends Component {
   };
 
   render() {
+    console.log("rendering TS");
     const { recording, paused, audioFile } = this.state;
     return (
       <View style={styles.container}>
