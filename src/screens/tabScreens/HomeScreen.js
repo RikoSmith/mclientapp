@@ -14,13 +14,6 @@ var mainStyles = require("../../style/main");
 var width = Dimensions.get("window").width; //full width
 var height = Dimensions.get("window").height; //full height
 
-const options = {
-  sampleRate: 16000, // default 44100
-  channels: 1, // 1 or 2, default 1
-  bitsPerSample: 16, // 8 or 16, default 16
-  wavFile: "audio.wav" // default 'audio.wav'
-};
-
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -38,8 +31,8 @@ class HomeScreen extends Component {
     header: null
   };
 
-  componentWillMount() {
-    console.log("Home screen pre-mount " + this.props.token);
+  componentDidMount() {
+    //console.log("Home screen pre-mount " + this.props.token);
     instance
       .get("/fdata", {
         headers: {
@@ -47,8 +40,8 @@ class HomeScreen extends Component {
         }
       })
       .then(response => {
-        console.log(response);
-        console.log(
+        //console.log(response);
+        /*console.log(
           response.data.hbeat +
             " " +
             response.data.weight +
@@ -56,7 +49,7 @@ class HomeScreen extends Component {
             response.data.todos +
             " " +
             response.data.mood
-        );
+        );*/
         this.setState({
           hbeat: response.data.fdata.hbeat,
           mood: response.data.fdata.mood,
@@ -80,8 +73,8 @@ class HomeScreen extends Component {
           }
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log("Started recording");
-          AudioRecord.init(options);
+          //console.log("Started recording");
+          /*AudioRecord.init(options);
           AudioRecord.start();
           for (i = 0; i < 1000000000; i++) {
             if (i === 1000000000 - 2) {
@@ -101,7 +94,7 @@ class HomeScreen extends Component {
           f.append("hbeat", "75");
           f.append("mood", "moderate");
           f.append("totdo", "7");
-          console.log(f);
+          console.log(f);*/
         } else {
           console.log("Camera permission denied");
         }

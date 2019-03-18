@@ -61,11 +61,11 @@ class TablesScreen extends Component {
   stop = async () => {
     if (!this.state.recording) return;
     this.setState({ result: "Processing..." });
-    console.log("63");
+    //console.log("63");
     let audioFile = await AudioRecord.stop();
-    console.log("65");
+    //console.log("65");
     this.setState({ audioFile, recording: false });
-    console.log("67");
+    //console.log("67");
 
     //--------------------------------------------------------\
     //-----------------------------------------------------
@@ -75,7 +75,7 @@ class TablesScreen extends Component {
       RNFS.readDir(RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
         .then(result => {
           //console.log("GOT RESULT", result);
-          console.log("75-76");
+          //console.log("75-76");
           // stat the first file
           return Promise.all([
             RNFS.stat(result[result.length - 1].path),
@@ -85,14 +85,14 @@ class TablesScreen extends Component {
         .then(statResult => {
           if (statResult[0].isFile()) {
             // if we have a file, read it
-            console.log("80-82");
+            //console.log("80-82");
             return RNFS.readFile(statResult[1], "base64");
           }
 
           return "no file";
         })
         .then(contents => {
-          console.log("89");
+          //console.log("89");
           // log the file contents
           const f = new FormData();
           f.append("lol", "asdasd");
@@ -115,7 +115,7 @@ class TablesScreen extends Component {
             });
         })
         .catch(err => {
-          console.log("103-116");
+          //console.log("103-116");
           console.log(err.message, err.code);
         });
     }, 2000);
@@ -169,7 +169,7 @@ class TablesScreen extends Component {
   };
 
   render() {
-    console.log("rendering TS");
+    //console.log("rendering TS");
     const { recording, paused, audioFile } = this.state;
     return (
       <View style={styles.container}>
