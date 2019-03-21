@@ -3,44 +3,56 @@ import { ScrollView, Text, StyleSheet } from "react-native";
 import { Card } from "react-native-elements";
 import GroupedBarChart from "../../components/Charts/GroupedBarChart";
 import RecordsList from "../../components/RecordsList/RecordsList";
+import instance from "../../utils/axiosConf";
+import { connect } from "react-redux";
 
-export default class ChartsScreen extends Component {
+class ChartsScreen extends Component {
+  state = {
+    loading: true,
+    data: null
+  };
+
   static navigationOptions = {
     header: null
   };
 
-  /*componentDidMount() {
+  componentDidMount() {
     //console.log("Home screen pre-mount " + this.props.token);
     instance
-      .get("/fdata", {
+      .get("/fdata10", {
         headers: {
           "x-access-token": this.props.token
         }
       })
       .then(response => {
-        this.setState({
-          hbeat: response.data.fdata.hbeat,
-          mood: response.data.fdata.mood,
-          weight: response.data.fdata.weight,
-          todos: response.data.fdata.todos
-        });
+        console.log(response);
+        this.setState({ loading: false, data: response.data.fdataList });
       })
       .catch(err => {
         console.log(err);
       });
-  }*/
+  }
 
   render() {
+    const { loading, data } = this.state;
     return (
       <ScrollView>
         <GroupedBarChart />
         <Card title="Last Recordings">
-          <RecordsList />
+          {loading ? <Text>Loading...</Text> : <RecordsList fdataList={data} />}
         </Card>
       </ScrollView>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    token: state.token
+  };
+};
+
+export default connect(mapStateToProps)(ChartsScreen);
 
 const styles = StyleSheet.create({
   container: {
