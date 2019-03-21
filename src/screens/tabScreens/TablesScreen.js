@@ -15,8 +15,11 @@ class TablesScreen extends Component {
     recording: false,
     loaded: false,
     paused: true,
-    result: "Click Record"
+    result: "Click Record",
+    resultShown: false,
+    lastId: null
   };
+
   audioBase64 = "";
   static navigationOptions = {
     header: null
@@ -108,7 +111,11 @@ class TablesScreen extends Component {
             })
             .then(response => {
               console.log(response.data);
-              comp.setState({ result: response.data.new_mood });
+              comp.setState({
+                result: response.data.new_mood,
+                resultShown: true,
+                lastId: response.data.fdata_id
+              });
             })
             .catch(err => {
               console.log(err);
@@ -168,15 +175,61 @@ class TablesScreen extends Component {
     this.setState({ paused: true });
   };
 
+  feedbackHandlerFalse = () => {
+    console.log("feedback handler: false");
+    this.setState({ resultShown: false });
+    const f = new FormData();
+    console.log("sending feedback");
+    f.append("feedback", false);
+    f.append("lastId", this.state.lastId);
+    instance
+      .post("/feedback", f, {
+        headers: {
+          "x-access-token": token_auth
+        }
+      })
+      .then(response => {
+        console.log("sent feedback");
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  feedbackHandlerTrue = () => {
+    console.log("feedback handler true");
+    this.setState({ resultShown: false });
+    const f = new FormData();
+    console.log("sending feedback");
+    f.append("feedback", true);
+    f.append("lastId", this.state.lastId);
+    instance
+      .post("/feedback", f, {
+        headers: {
+          "x-access-token": token_auth
+        }
+      })
+      .then(response => {
+        console.log("sent feedback");
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  feedbackSkip = () => {
+    this.setState({ resultShown: false });
+  };
+
   render() {
     //console.log("rendering TS");
-    const { recording, paused, audioFile } = this.state;
+    const { recording, paused, audioFile, resultShown, result } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.tCont}>
-          <Text style={styles.text}>
-            {recording ? "Recording..." : this.state.result}
-          </Text>
+          <Text style={styles.text}>{recording ? "Recording..." : result}</Text>
         </View>
         <View style={styles.row}>
           <Button onPress={this.start} title="Record" disabled={recording} />
@@ -187,6 +240,14 @@ class TablesScreen extends Component {
             <Button onPress={this.pause} title="Pause" disabled={!audioFile} />
           )}
         </View>
+        {resultShown && <Text style={styles.textFeedback}>Is it correct?</Text>}
+        {resultShown && (
+          <View style={styles.row}>
+            <Button title="Yes, it is" onPress={this.feedbackHandlerTrue} />
+            <Button title="Skip" onPress={this.feedbackSkip} />
+            <Button title="No, it's not" onPress={this.feedbackHandlerFalse} />
+          </View>
+        )}
       </View>
     );
   }
@@ -212,6 +273,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     alignSelf: "center"
+  },
+  textFeedback: {
+    fontSize: 24,
+    alignSelf: "center",
+    margin: 20,
+    marginTop: 50
   },
   tCont: {
     flex: 0.3,

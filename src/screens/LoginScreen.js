@@ -25,7 +25,7 @@ class LoginScreen extends Component {
 
   onLoginPress = () => {
     const code2 = Base64.encode("rikosmith:asdasd");
-    //console.log(code2);
+    console.log(code2);
     instance
       .post(
         "/login",
@@ -38,12 +38,12 @@ class LoginScreen extends Component {
         }
       )
       .then(response => {
-        //console.log(this.props.token);
-        //console.log(response);
+        console.log(this.props.token);
+        console.log(response);
         this.props.onLogin(response.data.token);
         this.props.navigation.navigate("HomeTabNavigator");
-        //console.log(this.props.token);
-        //console.log(this.props);
+        console.log(this.props.token);
+        console.log(this.props);
       })
       .catch(err => {
         console.log(err);
@@ -51,7 +51,7 @@ class LoginScreen extends Component {
   };
 
   render() {
-    //console.log("Rendering");
+    console.log("Rendering");
     return (
       <View style={styles.container}>
         <TextInput

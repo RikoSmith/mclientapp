@@ -60,50 +60,6 @@ class HomeScreen extends Component {
       .catch(err => {
         console.log(err);
       });
-
-    async function requestAudio(that) {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-          {
-            title: "Cool Photo App Camera Permission",
-            message:
-              "Cool Photo App needs access to your camera " +
-              "so you can take awesome pictures."
-          }
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          //console.log("Started recording");
-          /*AudioRecord.init(options);
-          AudioRecord.start();
-          for (i = 0; i < 1000000000; i++) {
-            if (i === 1000000000 - 2) {
-              that.setState({ passed: true });
-            }
-          }
-          audioFile = "";
-          if (that.state.passed) {
-            console.log("passed time");
-            console.log("Saved here:" + RNFS.DocumentDirectoryPath);
-            audioFile = await AudioRecord.stop();
-          }
-          console.log(audioFile);
-          console.log("Stopped recording");
-          const f = new FormData();
-          f.append("weight", "65");
-          f.append("hbeat", "75");
-          f.append("mood", "moderate");
-          f.append("totdo", "7");
-          console.log(f);*/
-        } else {
-          console.log("Camera permission denied");
-        }
-      } catch (err) {
-        console.warn(err);
-      }
-    }
-
-    requestAudio(this);
   }
 
   render() {
