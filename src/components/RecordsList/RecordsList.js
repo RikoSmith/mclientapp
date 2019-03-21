@@ -12,7 +12,7 @@ export default class RecordsList extends Component {
       return (
         <ListItem
           title="Stressed"
-          subtitle={item.date}
+          subtitle={item.date + "+6"}
           titleStyle={{ color: "#ff3333" }}
           subtitleStyle={{ color: "#ff3333", fontSize: 10 }}
           bottomDivider={false}
@@ -44,7 +44,7 @@ export default class RecordsList extends Component {
       return (
         <ListItem
           title="Not Stressed"
-          subtitle={item.date}
+          subtitle={item.date + "+6"}
           titleStyle={{ color: "#45D9CF" }}
           subtitleStyle={{ color: "#45D9CF", fontSize: 10 }}
           bottomDivider={false}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, Text, StyleSheet } from "react-native";
+import { ScrollView, Text, StyleSheet, RefreshControl } from "react-native";
 import { Card } from "react-native-elements";
 import GroupedBarChart from "../../components/Charts/GroupedBarChart";
 import RecordsList from "../../components/RecordsList/RecordsList";
@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 
 class ChartsScreen extends Component {
   state = {
-    loading: true,
+    refreshing: true,
     data: null
   };
 
@@ -25,21 +25,37 @@ class ChartsScreen extends Component {
         }
       })
       .then(response => {
-        console.log(response);
-        this.setState({ loading: false, data: response.data.fdataList });
+        console.log(response.data);
+        this.setState({ refreshing: false, data: response.data.fdataList });
       })
       .catch(err => {
         console.log(err);
       });
   }
 
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.componentDidMount();
+  };
+
   render() {
-    const { loading, data } = this.state;
+    const { refreshing, data } = this.state;
     return (
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+      >
         <GroupedBarChart />
         <Card title="Last Recordings">
-          {loading ? <Text>Loading...</Text> : <RecordsList fdataList={data} />}
+          {refreshing ? (
+            <Text>Loading...</Text>
+          ) : (
+            <RecordsList fdataList={data} />
+          )}
         </Card>
       </ScrollView>
     );
