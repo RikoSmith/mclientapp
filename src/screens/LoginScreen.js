@@ -24,7 +24,9 @@ class LoginScreen extends Component {
   };
 
   onLoginPress = () => {
-    const code2 = Base64.encode("rikosmith:asdasd");
+    const code2 = Base64.encode(
+      this.state.username + ":" + this.state.password
+    );
     console.log(code2);
     instance
       .post(

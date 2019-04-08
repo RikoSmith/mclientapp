@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button, Text } from "react-native";
+import { StyleSheet, View, Text, Linking } from "react-native";
+import { Divider, Button } from "react-native-elements";
 import { Buffer } from "buffer";
 import Permissions from "react-native-permissions";
 import Sound from "react-native-sound";
@@ -7,6 +8,68 @@ import AudioRecord from "react-native-audio-record";
 import instance from "../../utils/axiosConf";
 var RNFS = require("react-native-fs");
 import { connect } from "react-redux";
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+const notStress = [
+  { message: "You seem not stressed", button: false, bText: "", bLink: "" },
+  { message: "Did not detect any stress signs", button: false },
+  {
+    message: "You are feeling good, but anyway checkout these funny cat videos",
+    button: true,
+    bText: "Open cat videos",
+    bLink: "https://www.youtube.com/watch?v=XyNlqQId-nk"
+  },
+  { message: "Everything is OK", button: false },
+  {
+    message:
+      "Low stress level, but here are some meditation playlist just in case",
+    button: true,
+    bText: "Open playlist",
+    bLink: "https://www.youtube.com/watch?v=F1z_ZSnn_1k"
+  },
+  { message: "Negligable level of stress detected, you're OK", button: false },
+  {
+    message: "You are feeling good, no need for relaxation measures",
+    button: false
+  }
+];
+
+const stress = [
+  {
+    message: "You are stressed. Strongly recommend these cute puppies",
+    button: true,
+    bText: "Puppies",
+    bLink: "https://www.youtube.com/watch?v=UiBBfWyApyA"
+  },
+  {
+    message: "You need some help...Get the daily cuteness dose",
+    button: true,
+    bText: "Daily dose",
+    bLink: "https://www.youtube.com/watch?v=C9OMAX91oyw"
+  },
+  {
+    message: "Seems like you are a bit stressed. It's time for clumsy pandas",
+    button: true,
+    bText: "Clumsy pandas",
+    bLink: "https://www.youtube.com/watch?v=wAEzpwvrveg&t=2s"
+  },
+  {
+    message: "Stress is detected. Solution: Try Not To Laugh Challenge",
+    button: true,
+    bText: "Accept challenge",
+    bLink: "https://www.youtube.com/watch?v=_uh2R0jSIGs"
+  },
+  {
+    message:
+      "Moderate level of stress detected. Meditation and relaxation advised",
+    button: true,
+    bText: "Meditate",
+    bLink: "https://www.youtube.com/watch?v=ubL_HF2RGsA"
+  }
+];
 
 class TablesScreen extends Component {
   sound = null;
@@ -17,7 +80,10 @@ class TablesScreen extends Component {
     paused: true,
     result: "Click Record",
     resultShown: false,
-    lastId: null
+    lastId: null,
+    n: 0,
+    stressed: null,
+    fShown: false
   };
 
   audioBase64 = "";
@@ -57,7 +123,13 @@ class TablesScreen extends Component {
 
   start = () => {
     console.log("start record");
-    this.setState({ audioFile: "", recording: true, loaded: false });
+    this.setState({
+      audioFile: "",
+      recording: true,
+      loaded: false,
+      resultShown: false,
+      fShown: false
+    });
     AudioRecord.start();
   };
 
@@ -111,11 +183,27 @@ class TablesScreen extends Component {
             })
             .then(response => {
               console.log(response.data);
-              comp.setState({
-                result: response.data.new_mood,
-                resultShown: true,
-                lastId: response.data.fdata_id
-              });
+              if (response.data.new_mood === "stressed") {
+                n = getRandomInt(0, stress.length - 1);
+                comp.setState({
+                  result: stress[n].message,
+                  resultShown: true,
+                  fShown: true,
+                  lastId: response.data.fdata_id,
+                  n,
+                  stressed: true
+                });
+              } else {
+                n = getRandomInt(0, notStress.length - 1);
+                comp.setState({
+                  result: notStress[n].message,
+                  resultShown: true,
+                  fShown: true,
+                  lastId: response.data.fdata_id,
+                  n,
+                  stressed: false
+                });
+              }
             })
             .catch(err => {
               console.log(err);
@@ -177,7 +265,7 @@ class TablesScreen extends Component {
 
   feedbackHandlerFalse = () => {
     console.log("feedback handler: false");
-    this.setState({ resultShown: false });
+    this.setState({ fShown: false });
     const f = new FormData();
     console.log("sending feedback");
     f.append("feedback", false);
@@ -199,7 +287,7 @@ class TablesScreen extends Component {
 
   feedbackHandlerTrue = () => {
     console.log("feedback handler true");
-    this.setState({ resultShown: false });
+    this.setState({ fShown: false });
     const f = new FormData();
     console.log("sending feedback");
     f.append("feedback", true);
@@ -220,16 +308,72 @@ class TablesScreen extends Component {
   };
 
   feedbackSkip = () => {
-    this.setState({ resultShown: false });
+    this.setState({ fShown: false });
   };
 
   render() {
     //console.log("rendering TS");
-    const { recording, paused, audioFile, resultShown, result } = this.state;
+    const {
+      recording,
+      paused,
+      audioFile,
+      resultShown,
+      result,
+      fShown
+    } = this.state;
     return (
       <View style={styles.container}>
-        <View style={styles.tCont}>
-          <Text style={styles.text}>{recording ? "Recording..." : result}</Text>
+        <View
+          style={{
+            height: 350,
+            backgroundColor: "#fff",
+            margin: 20,
+            padding: 20
+          }}
+        >
+          <Text style={styles.textHeader}>Stress Level</Text>
+          <Divider style={{ marginBottom: 20 }} />
+          <View style={styles.tCont}>
+            {!resultShown && (
+              <Text style={styles.text}>
+                {recording ? "Recording..." : result}
+              </Text>
+            )}
+            {resultShown && this.state.stressed && (
+              <Text style={styles.textRed}>
+                {recording ? "Recording..." : result}
+              </Text>
+            )}
+            {resultShown && !this.state.stressed && (
+              <Text style={styles.textGreen}>
+                {recording ? "Recording..." : result}
+              </Text>
+            )}
+          </View>
+          {resultShown && this.state.stressed && (
+            <View>
+              <Divider style={{ marginBottom: 20, marginTop: 20 }} />
+              <Button
+                type="clear"
+                containerStyle={styles.lbutton}
+                title={stress[this.state.n].bText}
+                onPress={() => Linking.openURL(stress[this.state.n].bLink)}
+              />
+            </View>
+          )}
+          {resultShown &&
+            !this.state.stressed &&
+            notStress[this.state.n].bText && (
+              <View>
+                <Divider style={{ marginBottom: 20, marginTop: 20 }} />
+                <Button
+                  containerStyle={styles.lbutton}
+                  type="clear"
+                  title={notStress[this.state.n].bText}
+                  onPress={() => Linking.openURL(notStress[this.state.n].bLink)}
+                />
+              </View>
+            )}
         </View>
         <View style={styles.row}>
           <Button onPress={this.start} title="Record" disabled={recording} />
@@ -240,14 +384,24 @@ class TablesScreen extends Component {
             <Button onPress={this.pause} title="Pause" disabled={!audioFile} />
           )}
         </View>
-        {resultShown && <Text style={styles.textFeedback}>Is it correct?</Text>}
-        {resultShown && (
-          <View style={styles.row}>
-            <Button title="Yes, it is" onPress={this.feedbackHandlerTrue} />
-            <Button title="Skip" onPress={this.feedbackSkip} />
-            <Button title="No, it's not" onPress={this.feedbackHandlerFalse} />
-          </View>
-        )}
+        <View>
+          {fShown && <Text style={styles.textFeedback}>Is it correct?</Text>}
+          {fShown && (
+            <View style={styles.fButtons}>
+              <Button
+                type="clear"
+                title="Yes, it is"
+                onPress={this.feedbackHandlerTrue}
+              />
+              <Button type="clear" title="Skip" onPress={this.feedbackSkip} />
+              <Button
+                type="clear"
+                title="No, it's not"
+                onPress={this.feedbackHandlerFalse}
+              />
+            </View>
+          )}
+        </View>
       </View>
     );
   }
@@ -268,20 +422,52 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
+    marginBottom: 80,
+    marginTop: 20
   },
   text: {
     fontSize: 24,
-    alignSelf: "center"
+    alignSelf: "center",
+    textAlign: "center",
+    color: "#222"
+  },
+  textGreen: {
+    fontSize: 20,
+    alignSelf: "center",
+    textAlign: "center",
+    color: "#2e9e97"
+  },
+  textRed: {
+    fontSize: 20,
+    alignSelf: "center",
+    textAlign: "center",
+    color: "#cf1717"
   },
   textFeedback: {
-    fontSize: 24,
+    fontSize: 16,
     alignSelf: "center",
     margin: 20,
+    marginBottom: 10,
     marginTop: 50
   },
   tCont: {
     flex: 0.3,
-    justifyContent: "center"
+    justifyContent: "center",
+    alignSelf: "center"
+  },
+  fButtons: {
+    flexDirection: "row",
+    justifyContent: "space-evenly"
+  },
+  textHeader: {
+    fontSize: 20,
+    alignSelf: "center",
+    textAlign: "center",
+    color: "#888",
+    padding: 5
+  },
+  lbutton: {
+    color: "red"
   }
 });
