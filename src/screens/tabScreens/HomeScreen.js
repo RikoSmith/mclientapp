@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
   ScrollView,
-  Text,
   StyleSheet,
   View,
   Dimensions,
@@ -10,11 +9,8 @@ import {
 } from "react-native";
 import StatCard from "../../components/StatCard/StatCard";
 import HomeTile from "../../components/HomeTile/HomeTile";
-import RecCard from "../../components/RecCard/RecCard";
 import { connect } from "react-redux";
 import instance from "../../utils/axiosConf";
-import { PermissionsAndroid } from "react-native";
-import AudioRecord from "react-native-audio-record";
 var RNFS = require("react-native-fs");
 
 var mainStyles = require("../../style/main");

@@ -36,7 +36,7 @@ const HomeTabNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarIcon: a => <Icon name="settings" color={a.tintColor} size={22} />
       }
-    },
+    } /*,
     Notifications: {
       screen: NotificationsScreen,
       navigationOptions: {
@@ -44,10 +44,10 @@ const HomeTabNavigator = createBottomTabNavigator(
           <Icon name="notifications" color={a.tintColor} size={22} />
         )
       }
-    }
+    }*/
   },
   {
-    order: ["Home", "Charts", "Record", "Notifications", "Settings"],
+    order: ["Home", "Charts", "Record", /*"Notifications",*/ "Settings"],
     tabBarOptions: {
       activeTintColor: "#75b7e9",
       inactiveTintColor: "gray",
