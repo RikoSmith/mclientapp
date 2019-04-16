@@ -85,7 +85,7 @@ class LoginScreen extends Component {
         <Button
           buttonStyle={{
             marginTop: 15,
-            backgroundColor: "#45D9CF",
+            backgroundColor: "#9dcaec",
             borderColor: "rgba(255,255,255,0.75)",
             borderWidth: 1,
             width: 200
@@ -126,6 +126,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#45D9CF"
+    backgroundColor: "#9dcaec"
   }
 });

@@ -55,7 +55,7 @@ module.exports = StyleSheet.create({
     height: 120,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
-    backgroundColor: "#45D9CF"
+    backgroundColor: "#9dcaec"
   },
   userContent: {
     width: "70%",
@@ -116,5 +116,12 @@ module.exports = StyleSheet.create({
     width: 200,
     backgroundColor: "#ccc"
   },
-  scrollV: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }
+  scrollV: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "#edf0fd"
+  }
 });

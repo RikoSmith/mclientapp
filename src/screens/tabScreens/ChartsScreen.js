@@ -6,6 +6,8 @@ import RecordsList from "../../components/RecordsList/RecordsList";
 import instance from "../../utils/axiosConf";
 import { connect } from "react-redux";
 
+var mainStyles = require("../../style/main");
+
 class ChartsScreen extends Component {
   state = {
     refreshing: true,
@@ -48,8 +50,9 @@ class ChartsScreen extends Component {
             onRefresh={this._onRefresh}
           />
         }
+        style={mainStyles.scrollV}
       >
-        <GroupedBarChart />
+        {/*<GroupedBarChart />*/}
         <Card title="Last Recordings">
           {refreshing ? (
             <Text>Loading...</Text>

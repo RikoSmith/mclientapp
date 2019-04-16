@@ -49,7 +49,7 @@ const HomeTabNavigator = createBottomTabNavigator(
   {
     order: ["Home", "Charts", "Record", "Notifications", "Settings"],
     tabBarOptions: {
-      activeTintColor: "#45D9CF",
+      activeTintColor: "#75b7e9",
       inactiveTintColor: "gray",
       style: {
         paddingTop: 8

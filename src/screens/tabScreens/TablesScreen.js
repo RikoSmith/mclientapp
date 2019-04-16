@@ -13,6 +13,15 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+const recText = [
+  "Analyzing...",
+  "Hacking Google's voice recognition systems...",
+  "Processing...",
+  "Magic is happening now...",
+  "Applying prediction models...",
+  "Waiting Paul the Octopus's prediction..."
+];
+
 const notStress = [
   { message: "You seem not stressed", button: false, bText: "", bLink: "" },
   { message: "Did not detect any stress signs", button: false },
@@ -30,7 +39,7 @@ const notStress = [
     bText: "Open playlist",
     bLink: "https://www.youtube.com/watch?v=F1z_ZSnn_1k"
   },
-  { message: "Negligable level of stress detected, you're OK", button: false },
+  { message: "Negligible level of stress detected, you're OK", button: false },
   {
     message: "You are feeling good, no need for relaxation measures",
     button: false
@@ -45,7 +54,7 @@ const stress = [
     bLink: "https://www.youtube.com/watch?v=UiBBfWyApyA"
   },
   {
-    message: "You need some help...Get the daily cuteness dose",
+    message: "Stressed, you need some help...Get the daily cuteness dose",
     button: true,
     bText: "Daily dose",
     bLink: "https://www.youtube.com/watch?v=C9OMAX91oyw"
@@ -135,7 +144,8 @@ class TablesScreen extends Component {
 
   stop = async () => {
     if (!this.state.recording) return;
-    this.setState({ result: "Processing..." });
+    n = getRandomInt(0, recText.length - 1);
+    this.setState({ result: recText[n] });
     //console.log("63");
     let audioFile = await AudioRecord.stop();
     //console.log("65");
@@ -418,7 +428,8 @@ export default connect(mapStateToProps)(TablesScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: "#edf0fd"
   },
   row: {
     flexDirection: "row",

@@ -3,6 +3,8 @@ import { ScrollView, Text, StyleSheet } from "react-native";
 import Notifications from "../../components/Notifications/Notifications";
 import { Card } from "react-native-elements";
 
+var mainStyles = require("../../style/main");
+
 const nots = [
   {
     name: "Seen notification",
@@ -68,7 +70,7 @@ class NotificationsScreen extends Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView style={mainStyles.scrollV}>
         <Card>
           <Text>New</Text>
           <Notifications list={notsNew} />

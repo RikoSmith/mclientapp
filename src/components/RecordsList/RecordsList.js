@@ -13,30 +13,30 @@ export default class RecordsList extends Component {
         <ListItem
           title="Stressed"
           subtitle={item.date + "+6"}
-          titleStyle={{ color: "#ff3333" }}
-          subtitleStyle={{ color: "#ff3333", fontSize: 10 }}
+          titleStyle={{ color: "#ff6a6a" }}
+          subtitleStyle={{ color: "#ff6a6a", fontSize: 10 }}
           bottomDivider={false}
-          badge={
+          /*badge={
             item.feedback
               ? {
                   value: "Correct",
-                  textStyle: { color: "#45D9CF", fontSize: 12 },
+                  textStyle: { color: "#75b7e9", fontSize: 12 },
                   containerStyle: {
                     backgroundColor: "rgba(0,0,0,0)",
                     borderWidth: 1,
-                    borderColor: "#45D9CF"
+                    borderColor: "#75b7e9"
                   }
                 }
               : {
                   value: "Incorrect",
-                  textStyle: { color: "#ff3333", fontSize: 12 },
+                  textStyle: { color: "#ff6a6a", fontSize: 12 },
                   containerStyle: {
                     backgroundColor: "rgba(0,0,0,0)",
                     borderWidth: 1,
-                    borderColor: "#ff3333"
+                    borderColor: "#ff6a6a"
                   }
                 }
-          }
+          }*/
           hideChevron={true}
         />
       );
@@ -45,30 +45,30 @@ export default class RecordsList extends Component {
         <ListItem
           title="Not Stressed"
           subtitle={item.date + "+6"}
-          titleStyle={{ color: "#45D9CF" }}
-          subtitleStyle={{ color: "#45D9CF", fontSize: 10 }}
+          titleStyle={{ color: "#75b7e9" }}
+          subtitleStyle={{ color: "#75b7e9", fontSize: 10 }}
           bottomDivider={false}
-          badge={
+          /*badge={
             item.feedback
               ? {
                   value: "Correct",
-                  textStyle: { color: "#45D9CF", fontSize: 12 },
+                  textStyle: { color: "#75b7e9", fontSize: 12 },
                   containerStyle: {
                     backgroundColor: "rgba(0,0,0,0)",
                     borderWidth: 1,
-                    borderColor: "#45D9CF"
+                    borderColor: "#75b7e9"
                   }
                 }
               : {
                   value: "Incorrect",
-                  textStyle: { color: "#ff3333", fontSize: 12 },
+                  textStyle: { color: "#ff6a6a", fontSize: 12 },
                   containerStyle: {
                     backgroundColor: "rgba(0,0,0,0)",
                     borderWidth: 1,
-                    borderColor: "#ff3333"
+                    borderColor: "#ff6a6a"
                   }
                 }
-          }
+          }*/
           hideChevron={true}
         />
       );
