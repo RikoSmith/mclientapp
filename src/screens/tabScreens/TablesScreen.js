@@ -23,7 +23,7 @@ const recText = [
 ];
 
 const notStress = [
-  { message: "You seem not stressed", button: false, bText: "", bLink: "" },
+  { message: "You seem not stressed", button: false },
   { message: "Did not detect any stress signs", button: false },
   {
     message: "You are feeling good, but anyway checkout these funny cat videos",
@@ -195,6 +195,7 @@ class TablesScreen extends Component {
               console.log(response.data);
               if (response.data.new_mood === "stressed") {
                 n = getRandomInt(0, stress.length - 1);
+                console.log("stressed: " + n);
                 comp.setState({
                   result: stress[n].message,
                   resultShown: true,
@@ -205,6 +206,7 @@ class TablesScreen extends Component {
                 });
               } else {
                 n = getRandomInt(0, notStress.length - 1);
+                console.log("not stressed: " + n);
                 comp.setState({
                   result: notStress[n].message,
                   resultShown: true,

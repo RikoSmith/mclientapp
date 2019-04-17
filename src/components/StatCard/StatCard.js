@@ -16,6 +16,7 @@ class StatCard extends Component {
     if (this.props.bIconColor) {
       cardBigIcon.color = this.props.bIconColor;
     }
+
     return (
       <View>
         <Card containerStyle={mainStyles.card}>
@@ -26,9 +27,15 @@ class StatCard extends Component {
           <Text style={mainStyles.cardTitle}>
             {this.props.title ? this.props.title : "Title"}
           </Text>
-          <Text style={mainStyles.cardValue}>
-            {this.props.value ? this.props.value : "Value"}
-          </Text>
+          {this.props.stat ? (
+            <Text style={mainStyles.cardValue}>
+              <Text style={{ color: "#75b7e9" }}>{this.props.value1}</Text>
+              <Text style={{ color: "#969696" }}>|</Text>
+              <Text style={{ color: "#ff6a6a" }}>{this.props.value2}</Text>
+            </Text>
+          ) : (
+            <Text style={mainStyles.cardValue}>{this.props.value}</Text>
+          )}
           <Divider style={mainStyles.cardDivider} />
           <View style={mainStyles.cardBottom}>
             <Icon

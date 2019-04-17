@@ -3,6 +3,7 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  Text,
   Dimensions,
   ActivityIndicator,
   RefreshControl
@@ -113,14 +114,16 @@ class HomeScreen extends Component {
           bIconName="fitness"
           bIconColor="#ff9500"
           title="Weight"
+          stat={false}
           value={this.state.weight + "KG"}
           iconName="refresh"
           text="Updated now"
         />
         <StatCard
-          bIconName="happy"
-          bIconColor="#87cb16"
+          bIconName={this.state.mood === "stressed" ? "alert" : "happy"}
+          bIconColor={this.state.mood === "stressed" ? "#ffd633" : "#87cb16"}
           title="Mood"
+          stat={false}
           value={this.state.mood_text}
           iconName="microphone"
           text="Last recorded"
@@ -129,7 +132,9 @@ class HomeScreen extends Component {
           bIconName="calendar"
           bIconColor="#ff4a55"
           title="Weekly Stats"
-          value={this.state.week_nstr + "/" + this.state.week_str}
+          stat={true}
+          value1={this.state.week_nstr}
+          value2={this.state.week_str}
           iconName="time"
           text="In the last 7 days"
         />
@@ -137,7 +142,9 @@ class HomeScreen extends Component {
           bIconName="sunny"
           bIconColor="#1dc7ea"
           title="Daily Stats"
-          value={this.state.day_nstr + "/" + this.state.day_str}
+          stat={true}
+          value1={this.state.day_nstr}
+          value2={this.state.day_str}
           iconName="time"
           text="Today"
         />
